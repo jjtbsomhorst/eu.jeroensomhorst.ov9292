@@ -1,0 +1,6 @@
+{
+    "departure_first": "The next __type__ departs at __time__ to __destination__ (__delay__)",
+    "departure_next": "The __type__ to __destination__ departs at __time__ (__delay__)",
+    "no_journeys_found": "No route to destination found",
+    "first_journey": "Eerst volgende mogelijkheid richting __destination__ vertrekt om __departuretime__ vanaf __departure__ aankomst om __arrivaltime__"
+}

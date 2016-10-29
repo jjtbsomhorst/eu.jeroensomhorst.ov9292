@@ -1,0 +1,111 @@
+{
+    "id": "eu.jeroensomhorst.ov9292",
+    "name": {
+        "nl": "9292 ov information",
+        "en": "9292 public transport information"
+    },
+    
+    "description": {
+        "nl": "9292 ov app",
+        "en": "9292 ov app"
+    },
+    "images":{
+        "large":"./assets/images/large.jpg",
+        "small":"./assets/images/small.jpg"
+    },
+    "version": "0.0.1",
+    "compatibility": "0.x || 1.x",
+    "author": {
+            "name": "Jeroen Somhorst",
+            "email": "j.somhorst@gmail.com"
+    },
+    "category": ["internet"], 
+    "dependencies":{
+        "request":"*"
+    },
+    "flow":{
+        "triggers":[],
+        "conditions":[],
+        "actions":[
+            {
+                "id": "9292_find_route",
+                "title":{
+                    "en":"Find route",
+                    "nl":"Vind route"
+                },
+                "args":[{
+                    "name": "departure",
+                    "type": "autocomplete",
+                    "placeholder":{
+                        "en": "From",
+                        "nl": "Van"
+                    }
+                },
+                {
+                    "name": "destination",
+                    "type": "autocomplete",
+                    "placeholder":{
+                        "en": "To",
+                        "nl": "Naar"
+                    }
+                }]
+            },
+            {
+                "id":"9292_find_next_departure",
+                "title": {
+                    "en":"Find departure time",
+                    "nl":"Vind vertrektijd"
+                },
+                "args":[{
+                   "name":"station",
+                   "type":"autocomplete" 
+                },
+                {
+                    "name": "type",
+                    "type": "dropdown",
+                    "values":[
+                        {
+                            "id":"train",
+                            "label":{
+                                "en": "Train",
+                                "nl": "Trein"
+                            }
+                        },
+                        {
+                            "id":"bus",
+                            "label":{
+                                "en": "Bus",
+                                "nl": "Bus"
+                            }
+                        },
+                        {
+                            "id":"tram",
+                            "label":{
+                                "en": "Tram",
+                                "nl": "Tram"
+                            }
+                        },
+                        {
+                            "id":"subway",
+                            "label":{
+                                "en": "Subway",
+                                "nl": "Metro"
+                            }
+                        },
+                        {
+                            "id":"ferry",
+                            "label":{
+                                "en": "Ferry",
+                                "nl": "Veerboot"
+                            }
+                        }
+                    ]
+                }]
+        }]
+    },
+    "permissions": [
+        "homey:manager:speech-output",
+        "homey:manager:speech-input"
+    ],
+    "speech":[]
+}
