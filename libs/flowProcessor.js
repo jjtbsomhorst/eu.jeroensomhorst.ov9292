@@ -40,13 +40,13 @@ const ARGS_STATIONNAME = "station";
          this.api.getDisturbances(function(data){
              
              data.forEach(function(value){
-                Homey.log(value.title);
+                Homey.manager('speech-output').say(value.title);    
                 if(value.operatorAdvice.length > 255){
                     value.operatorAdvice.split(".").forEach(function(v){
-                        Homey.log(v);
+                        Homey.manager('speech-output').say(v);    
                     });
                 }else{
-                    Homey.log(value.operatorAdvice);
+                    Homey.manager('speech-output').say(value.operatorAdvice);
                 } 
              });
          },function(data){
@@ -76,8 +76,8 @@ const ARGS_STATIONNAME = "station";
                  speechOptions.arrivaltime = data[index].arrival.replace("T"," ");
                  label = "first_journey";
              }
-            Homey.log(__(label,speechOptions));
-            //Homey.manager('speech-output').say(__(label,speechOptions));
+            //Homey.log(__(label,speechOptions));
+            Homey.manager('speech-output').say(__(label,speechOptions));
 
 
              cb(null,true);
