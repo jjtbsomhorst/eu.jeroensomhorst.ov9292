@@ -18,8 +18,14 @@ This is an application that gives your Homey the power to find routes from point
 
 - Find a journey from A to B. Homey will tell you the next possible option. Where and when it leaves and what time it will arrive
 - Find departure times for a single station. You can specify which type of transport you want to filter (Can be used for huge transport hubs)
+- Let Homey tell you the current disturbances 
+- Let Homey tell you the current disturbances filtered by some text 
 
 ## Changelog
+
+0.2.0
+* Implemented action to get let Homey tell the current unplanned disturbances
+* Implemented action to let Homey tell the current disturbances filtered by specified text
 
 0.1.0 
 * Initial release

@@ -13,7 +13,7 @@
         "large":"./assets/images/large.jpg",
         "small":"./assets/images/small.jpg"
     },
-    "version": "0.0.1",
+    "version": "0.0.2",
     "compatibility": "0.x || 1.x",
     "author": {
             "name": "Jeroen Somhorst",
@@ -27,6 +27,29 @@
         "triggers":[],
         "conditions":[],
         "actions":[
+            {
+                "id": "9292_report_disturbance",
+                "title": {
+                    "en": "Disturbances",
+                    "nl": "Storingen"
+                }
+            },
+            {
+                "id": "9292_disturabance_filtered",
+                "title": {
+                    "en": "Disturbances",
+                    "nl": "Storingen"
+                },
+                "args":[{
+                    "name":"text",
+                    "type": "text",
+                    "placeholder": {
+                        "en": "Contains term",
+                        "nl": "Bevat term"
+                    }
+                }]
+
+            },
             {
                 "id": "9292_find_route",
                 "title":{

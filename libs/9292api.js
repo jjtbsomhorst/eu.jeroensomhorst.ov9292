@@ -2,8 +2,12 @@
 var http = require('http');
 var path = require('path');
 var HttpApi = require( path.resolve( __dirname, "./httpapi.js" ) );
-
+var utils = require( path.resolve( __dirname, "./utils.js" ) );
 const baseurl = "api.9292.nl";
+const endpoint_disturbances = "/0.1/messages/disturbances";
+const endpoint_locations = "/0.1/locations";
+const endpoint_location_departures = "/0.1/locations/__stopid__/departure-times";
+const endpoint_journey = "/0.1/journeys";
 
 class ovApi extends HttpApi{
 
@@ -12,9 +16,27 @@ class ovApi extends HttpApi{
         this.language= language;
     }
 
+    
+
+    getDisturbances(success,error,filterText){
+        var params = this.getDefaultParams();
+        var path = endpoint_disturbances;
+        var options = super.generateOptions(baseurl,path,params);
+        Homey.log("filterText");
+        super.doGetRequest(function(data){
+            var disturbances = JSON.parse(data).disturbances;
+            if(filterText != null && filterText != ""){
+                disturbances = disturbances.filter(utils.filterDisturbances(filterText),this);
+            }
+            success(disturbances);
+        },function(data){
+            error(data);
+        },options);
+
+    }
+
+
     searchJourney(success,error,from,to,byFerry,bySubway,byTram,byTrain,byBus,searchType,time){
-        //https://github.com/thomasbrus/9292-api-spec/blob/master/docs/resources/journeys.md
-        //http://api.9292.nl/0.1/journeys?before=1&sequence=1&byFerry=true&bySubway=true&byBus=true&byTram=true&byTrain=true&lang=lang&from=from.id&dateTime=yyyy-mm-ddThhmm&searchType=departure&interchangeTime=standard&after=5&to=to.id
         var params = this.getDefaultParams();
 
         params.push("from");
@@ -52,7 +74,7 @@ class ovApi extends HttpApi{
         params.push("dateTime");
         params.push(time);
 
-        var options = this.generateOptions(baseurl,"/0.1/journeys",params);
+        var options = this.generateOptions(baseurl,endpoint_journey,params);
         super.doGetRequest(function(data){
             var response = JSON.parse(data);
             success(response.journeys);
@@ -76,7 +98,7 @@ class ovApi extends HttpApi{
 
     getDepartures(success,error,id,type){
         var params = this.getDefaultParams();
-        var path = "/0.1/locations/"+id+"/departure-times"
+        var path = __(endpoint_location_departures,{"stopid":id})
 
        var options = super.generateOptions(baseurl,path,params);
        super.doGetRequest(function(data){
@@ -106,7 +128,7 @@ class ovApi extends HttpApi{
             params.push(types);
         }
         
-        var options = super.generateOptions(baseurl,"/0.1/locations",params);
+        var options = super.generateOptions(baseurl,endpoint_locations,params);
         super.doGetRequest(function(data){
 
             var locationResponse= JSON.parse(data)
