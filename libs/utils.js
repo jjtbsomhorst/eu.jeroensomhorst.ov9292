@@ -3,8 +3,9 @@
 class Utils{
 
     static filterDisturbances(term){
-        Homey.log("Filter disturbances on "+term);
+        
         return function(element){
+            Homey.log("Filter disturbances on "+term);
             var searchTerm = term.toLowerCase();
             var title = element.title != null ? element.title.toLowerCase(): "";
             var operatorAdvice = element.operatorAdvice != null ? element.operatorAdvice.toLowerCase(): "";

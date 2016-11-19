@@ -25,7 +25,7 @@ class ovApi extends HttpApi{
         super.doGetRequest(function(data){
             var disturbances = JSON.parse(data).disturbances;
             if(filterText != null && filterText != ""){
-                disturbances = disturbances.filter(utils.filterDisturbances(filterText),this);
+                success(disturbances.filter(utils.filterDisturbances(filterText),this));
             }
             success(disturbances);
         },function(data){
@@ -155,7 +155,7 @@ class ovApi extends HttpApi{
             }
             params.push(args.args.type);
         }
-                
+
         Homey.log(params);
         var options = super.generateOptions(baseurl,endpoint_locations,params);
         Homey.log(JSON.stringify(options));

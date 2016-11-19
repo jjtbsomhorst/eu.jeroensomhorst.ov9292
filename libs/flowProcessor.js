@@ -31,11 +31,11 @@ const ARGS_STATIONNAME = "station";
      onReportDisturbance(cb,args){
          Homey.log('onReportDisturbance called');
          this.api.getDisturbances(function(data){
-             
+             Homey.log('Disturbances found');
              data.forEach(function(value){
                 Homey.manager('speech-output').say(value.title);
                 if(value.hasOwnProperty('operatorAdvice')){
-                    if(value.operatorAdvice.length > 255){
+                    if(value.operatorAdvice != null && value.operatorAdvice.length > 255){
                          value.operatorAdvice.split(".").forEach(function(v){
                         Homey.manager('speech-output').say(v);  
                          });  
@@ -45,7 +45,8 @@ const ARGS_STATIONNAME = "station";
                 }
              });
          },function(data){
-
+            Homey.log('kapot');
+            cb();
          },args.text);
      }
      onActionFindRoute(cb,args){
