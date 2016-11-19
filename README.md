@@ -26,6 +26,7 @@ This is an application that gives your Homey the power to find routes from point
 0.2.0
 * Implemented action to get let Homey tell the current unplanned disturbances
 * Implemented action to let Homey tell the current disturbances filtered by specified text
+* Fixed a bug that would prevent the user from get departure times from things other than bus
 
 0.1.0 
 * Initial release

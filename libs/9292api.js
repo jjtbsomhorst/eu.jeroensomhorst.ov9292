@@ -22,7 +22,6 @@ class ovApi extends HttpApi{
         var params = this.getDefaultParams();
         var path = endpoint_disturbances;
         var options = super.generateOptions(baseurl,path,params);
-        Homey.log("filterText");
         super.doGetRequest(function(data){
             var disturbances = JSON.parse(data).disturbances;
             if(filterText != null && filterText != ""){
@@ -96,17 +95,30 @@ class ovApi extends HttpApi{
         return params;
     }
 
-    getDepartures(success,error,id,type){
+    getDepartures(success,error,id,transportype){
         var params = this.getDefaultParams();
         var path = __(endpoint_location_departures,{"stopid":id})
+        if(transportype == "train"){
+            transportype = "trein";
+        }else if(transportype == "bus"){
+            transportype = "bus";
+        }else if(transportype == "tram"){
+            transportype = "tram"
+        }else if(transportype == "subway"){
+            transportype = "metro";
+        }else if(transportype == "ferry"){
+            transportype = 'veerboot';
+        }
+
 
        var options = super.generateOptions(baseurl,path,params);
+       Homey.log(JSON.stringify(options));
        super.doGetRequest(function(data){
-           Homey.log(data);
+           Homey.log(transportype);
            var departureData = JSON.parse(data);
             
            departureData.tabs.some(function(value){
-               if(value.id == type){
+               if(value.id == transportype){
                    success(value.departures);
                    return true;
                }
@@ -116,19 +128,37 @@ class ovApi extends HttpApi{
        },options);
     }
 
-    searchLocationByName(success,error,q,types){
+    searchLocationByName(success,error,args){
 
         var params = this.getDefaultParams();
+        Homey.log('Arguments : '+JSON.stringify(args));
 
-        params.push("q");
-        params.push(q);
-        
-        if(types != null && types != ""){
-            params.push('type');
-            params.push(types);
+        if(args.hasOwnProperty('query')){
+            if(args.query.length > 2){
+                params.push("q");
+                params.push(args.query);        
+            }
         }
-        
+        if(args.args.hasOwnProperty('type')){
+            params.push("type");
+                    
+            if(args.args.type == "train"){
+                args.args.type = "station";
+            }else if(args.args.type == "bus"){
+                args.args.type = "stop";
+            }else if(args.args.type == "tram"){
+                args.args.type = "stop"
+            }else if(args.args.type == "subway"){
+                args.args.type = "stop";
+            }else if(args.args.type == "ferry"){
+                args.args.type = 'stop';
+            }
+            params.push(args.args.type);
+        }
+                
+        Homey.log(params);
         var options = super.generateOptions(baseurl,endpoint_locations,params);
+        Homey.log(JSON.stringify(options));
         super.doGetRequest(function(data){
 
             var locationResponse= JSON.parse(data)

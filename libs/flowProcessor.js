@@ -17,14 +17,7 @@ const ARGS_STATIONNAME = "station";
          Homey.manager('flow').on(ACTION_find_next_departure,this.getDepartures.bind(this));
          Homey.manager('flow').on(ACTION_find_next_departure+"."+ARGS_STATIONNAME+".autocomplete",this.onFindStation.bind(this))
 
-         // Triggers
-
-         // Conditions
-
-         
-
-         // Actions
-
+ 
          Homey.manager('flow').on(ACTION_FIND_ROUTE,this.onActionFindRoute.bind(this));
          Homey.manager('flow').on(ACTION_FIND_ROUTE+".destination.autocomplete",this.onFindStation.bind(this));
          Homey.manager('flow').on(ACTION_FIND_ROUTE+".departure.autocomplete",this.onFindStation.bind(this));
@@ -40,26 +33,27 @@ const ARGS_STATIONNAME = "station";
          this.api.getDisturbances(function(data){
              
              data.forEach(function(value){
-                Homey.manager('speech-output').say(value.title);    
-                if(value.operatorAdvice.length > 255){
-                    value.operatorAdvice.split(".").forEach(function(v){
-                        Homey.manager('speech-output').say(v);    
-                    });
-                }else{
-                    Homey.manager('speech-output').say(value.operatorAdvice);
-                } 
+                Homey.manager('speech-output').say(value.title);
+                if(value.hasOwnProperty('operatorAdvice')){
+                    if(value.operatorAdvice.length > 255){
+                         value.operatorAdvice.split(".").forEach(function(v){
+                        Homey.manager('speech-output').say(v);  
+                         });  
+                    }else{
+    	                Homey.manager('speech-output').say(value.operatorAdvice);
+                    }
+                }
              });
          },function(data){
 
          },args.text);
      }
      onActionFindRoute(cb,args){
-         Homey.log(args);
+       
          this.api.searchJourney(function(data){
              
              var speechOptions = {};
              var label = "no_journeys_found";
-             Homey.log(data.length);
              var now = moment();
 
              var index = data.findIndex(function(element){
@@ -76,7 +70,7 @@ const ARGS_STATIONNAME = "station";
                  speechOptions.arrivaltime = data[index].arrival.replace("T"," ");
                  label = "first_journey";
              }
-            //Homey.log(__(label,speechOptions));
+            
             Homey.manager('speech-output').say(__(label,speechOptions));
 
 
@@ -89,6 +83,7 @@ const ARGS_STATIONNAME = "station";
 
      getDepartures( callback, args){
          this.api.getDepartures(function(data){
+             Homey.log(data);
             var speechOptions = {
                  "type": data[0].mode.type,
                  "number": data[0].service,
@@ -96,10 +91,8 @@ const ARGS_STATIONNAME = "station";
                  "destination": data[0].destinationName,
                  "delay": data[0].realtimeText == null ? "" : data[0].realtimeText
              };
-             //Homey.manager('speech-output').say(__("departure_first",speechOptions));
-             Homey.log(__("departure_first",speechOptions));
-
-             
+             Homey.manager('speech-output').say(__("departure_first",speechOptions));
+            
              callback(null,true);
          },function(data){
             callback(null,false);
@@ -109,7 +102,7 @@ const ARGS_STATIONNAME = "station";
 
      onFindStation(cb,args){
          Homey.log('On Find station autocomplete');
-         
+         Homey.log(args);
          var returnValue = [];
          if(args.query == ""){
             cb(null,returnValue);
@@ -117,18 +110,25 @@ const ARGS_STATIONNAME = "station";
              this.api.searchLocationByName(function(data){
                 var responseData = [];
                  data.forEach(function(value,index,array){
-                    responseData.push({
-                        id: value.id,
-                        name: value.name+", "+value.place.name,
-                        description: value.place.regionName
-                    });
+                     var record = {};
+                     record.id = value.id;
+                     
+                     if(value.hasOwnProperty('place')){
+                         record.name = value.name+", "+value.place.name;
+                         record.description = value.place.regionName;
+                     }else{
+                         record.name = value.name;
+                         record.description = value.regionName;
+                     }
+
+                    responseData.push(record);
                  });
 
                  
                 cb(null,responseData);
              },function(data){
                 cb(null,[]);
-             },args.query,'stop');
+             },args);
          }
          
          
