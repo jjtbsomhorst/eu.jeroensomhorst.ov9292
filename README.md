@@ -23,6 +23,10 @@ This is an application that gives your Homey the power to find routes from point
 
 ## Changelog
 
+0.2.1
+
+* Changed the category from Internet to Location
+
 0.2.0
 * Implemented action to get let Homey tell the current unplanned disturbances
 * Implemented action to let Homey tell the current disturbances filtered by specified text
