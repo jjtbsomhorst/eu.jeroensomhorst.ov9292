@@ -19,7 +19,7 @@
             "name": "Jeroen Somhorst",
             "email": "j.somhorst@gmail.com"
     },
-    "category": ["location"], 
+    "category": ["internet","localization"], 
     "dependencies":{
         "request":"*"
     },
