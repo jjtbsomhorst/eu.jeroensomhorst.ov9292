@@ -25,7 +25,7 @@ This is an application that gives your Homey the power to find routes from point
 
 0.2.2
 
-* Added option to set a offset for journey searches
+* Added an action card to get journey info with a specified offset (in minutes). 
 
 0.2.1
 
