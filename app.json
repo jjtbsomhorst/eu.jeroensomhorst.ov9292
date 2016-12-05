@@ -49,8 +49,7 @@
                     }
                 }]
 
-            },
-            {
+            },{
                 "id": "9292_find_route",
                 "title":{
                     "en":"Find route",
@@ -70,6 +69,38 @@
                     "placeholder":{
                         "en": "To",
                         "nl": "Naar"
+                    }
+                }
+            ]
+            },
+            {
+                "id": "9292_find_route_offset",
+                "title":{
+                    "en":"Find route",
+                    "nl":"Vind route"
+                },
+                "args":[{
+                    "name": "departure",
+                    "type": "autocomplete",
+                    "placeholder":{
+                        "en": "From",
+                        "nl": "Van"
+                    }
+                },
+                {
+                    "name": "destination",
+                    "type": "autocomplete",
+                    "placeholder":{
+                        "en": "To",
+                        "nl": "Naar"
+                    }
+                },
+                {
+                    "name": "Offset",
+                    "type": "number",
+                    "placeholder":{
+                        "en": "Offset in minutes",
+                        "nl": "Offset in minuten"
                     }
                 }]
             },

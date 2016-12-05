@@ -6,6 +6,7 @@ var ovApi = require( path.resolve( __dirname, "./9292api.js" ) );
 const moment = require('moment');
 const ACTION_find_next_departure = "action.9292_find_next_departure";
 const ACTION_FIND_ROUTE = "action.9292_find_route";
+const ACTION_FIND_ROUTE_OFFSET = ACTION_FIND_ROUTE+"_offset";
 const ACTION_REPORT_DISTURBANCES = "action.9292_report_disturbance";
 const ACTION_REPORT_DISTURBANCES_FILTERED = "action.9292_disturabance_filtered";
 const ARGS_STATIONNAME = "station";
@@ -21,6 +22,12 @@ const ARGS_STATIONNAME = "station";
          Homey.manager('flow').on(ACTION_FIND_ROUTE,this.onActionFindRoute.bind(this));
          Homey.manager('flow').on(ACTION_FIND_ROUTE+".destination.autocomplete",this.onFindStation.bind(this));
          Homey.manager('flow').on(ACTION_FIND_ROUTE+".departure.autocomplete",this.onFindStation.bind(this));
+
+
+         Homey.manager('flow').on(ACTION_FIND_ROUTE_OFFSET,this.onActionFindRoute.bind(this));
+         Homey.manager('flow').on(ACTION_FIND_ROUTE_OFFSET+".destination.autocomplete",this.onFindStation.bind(this));
+         Homey.manager('flow').on(ACTION_FIND_ROUTE_OFFSET+".departure.autocomplete",this.onFindStation.bind(this));
+
          Homey.manager("flow").on(ACTION_REPORT_DISTURBANCES,this.onReportDisturbance.bind(this));
          Homey.manager("flow").on(ACTION_REPORT_DISTURBANCES_FILTERED,this.onReportDisturbance.bind(this));
          
@@ -51,8 +58,17 @@ const ARGS_STATIONNAME = "station";
      }
      onActionFindRoute(cb,args){
        
+         var departureTime = moment().local();
+
+
+         if(args.hasOwnProperty('Offset') && !isNaN(args.Offset)){
+             departureTime.add(args.Offset,'minutes');
+         }
+
+
          this.api.searchJourney(function(data){
-             
+             Homey.log('Arguments');
+             Homey.log(args);
              var speechOptions = {};
              var label = "no_journeys_found";
              var now = moment();
@@ -73,12 +89,10 @@ const ARGS_STATIONNAME = "station";
              }
             
             Homey.manager('speech-output').say(__(label,speechOptions));
-
-
-             cb(null,true);
+            cb(null,true);
          },function(data){
 
-         },args.departure.id,args.destination.id,true,true,true,true,true,"departure",moment().local().format("YYYY-MM-DDTHHmm"));
+         },args.departure.id,args.destination.id,true,true,true,true,true,"departure",departureTime.format("YYYY-MM-DDTHHmm"));
          
      }
 

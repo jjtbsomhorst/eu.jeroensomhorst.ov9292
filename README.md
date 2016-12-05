@@ -23,6 +23,10 @@ This is an application that gives your Homey the power to find routes from point
 
 ## Changelog
 
+0.2.2
+
+* Added option to set a offset for journey searches
+
 0.2.1
 
 * Changed the category from Internet to Location
