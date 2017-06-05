@@ -25,6 +25,7 @@ This is an application that gives your Homey the power to find routes from point
 
 0.2.3
 
+* Removed the pronunciation of the date from the journey information
 
 0.2.2
 
