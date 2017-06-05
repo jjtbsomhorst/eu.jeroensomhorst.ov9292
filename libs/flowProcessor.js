@@ -72,21 +72,27 @@ const ARGS_STATIONNAME = "station";
              var speechOptions = {};
              var label = "no_journeys_found";
              var now = moment();
+             if(data){
+                var index = data.findIndex(function(element){
+                        var mDeparture = moment(element.departure);
+                        return mDeparture.isSameOrAfter(now);
+                    });
 
-             var index = data.findIndex(function(element){
-                    var mDeparture = moment(element.departure);
-                    return mDeparture.isSameOrAfter(now);
-                });
-
-            
-             if(index > -1){
                 
-                 speechOptions.destination = args.destination.name;
-                 speechOptions.departuretime = data[index].departure.replace("T"," ");
-                 speechOptions.departure = args.departure.name;
-                 speechOptions.arrivaltime = data[index].arrival.replace("T"," ");
-                 label = "first_journey";
+                if(index > -1){
+                    
+                    speechOptions.destination = args.destination.name;
+                    var dt = date[index].departure;
+                    var at = date[index].arrival;
+
+                    speechOptions.departuretime = dt.substring(dt.indexOf("T")+1);
+                    speechOptions.departure = args.departure.name;
+                    speechOptions.arrivaltime = at.substring(at.indexOf("T")+1);
+                    label = "first_journey";
+                }
+
              }
+
             
             Homey.manager('speech-output').say(__(label,speechOptions));
             cb(null,true);

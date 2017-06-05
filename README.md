@@ -23,6 +23,9 @@ This is an application that gives your Homey the power to find routes from point
 
 ## Changelog
 
+0.2.3
+
+
 0.2.2
 
 * Added an action card to get journey info with a specified offset (in minutes). 
