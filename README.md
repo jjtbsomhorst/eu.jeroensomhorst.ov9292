@@ -23,6 +23,10 @@ This is an application that gives your Homey the power to find routes from point
 
 ## Changelog
 
+0.2.4
+
+* Bugfix release
+
 0.2.3
 
 * Removed the pronunciation of the date from the journey information
