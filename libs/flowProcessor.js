@@ -82,8 +82,8 @@ const ARGS_STATIONNAME = "station";
                 if(index > -1){
                     
                     speechOptions.destination = args.destination.name;
-                    var dt = date[index].departure;
-                    var at = date[index].arrival;
+                    var dt = data[index].departure;
+                    var at = data[index].arrival;
 
                     speechOptions.departuretime = dt.substring(dt.indexOf("T")+1);
                     speechOptions.departure = args.departure.name;
